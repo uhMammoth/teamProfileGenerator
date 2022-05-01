@@ -1,3 +1,4 @@
+//base class with attributes id, name and email
 class  employee{
     constructor(name, id, email){
         this.id = id;

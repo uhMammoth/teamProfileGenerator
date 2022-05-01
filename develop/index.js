@@ -1,3 +1,4 @@
+//imports from 4 class files as well as htmlGeneration file in dist folder
 const inquirer = require('inquirer');
 const {addEmployee, finished} = require('./dist/htmlGeneration');
 const Employee = require('./lib/Employee');
@@ -5,6 +6,7 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
+//contains all questions in inquirer format
 const promptQuestions = [{
     type: 'text',
     name: 'fullName',
@@ -50,15 +52,17 @@ const promptQuestions = [{
     choices: ['I want to add an engineer', 'I want to add an intern', 'No more employees to add']
 }];
 
+//assigns variables for all questions
 const [fullName, employeeName, id, email, employeeEmail, office, github, school, nextEmployee] = promptQuestions;
 
+//groups questions based on employee prompt
 const managerQuestions = [fullName, id, email, office];
 const engineerQuestions = [employeeName, id, employeeEmail, github];
 const internQuestions = [employeeName, id, employeeEmail, school];
 
 const employee = new Employee();
 
-// inquirer prompt
+// initial prompt where manager inputs information
 async function teamPrompt(){    
     let teamHtml = ``;
     await inquirer
@@ -69,16 +73,19 @@ async function teamPrompt(){
             manager.email = answer.email;
             manager.officeNumber = answer.office;
             manager.id = answer.id;
-
+            //seeks function from other js file and returns html code that will be used later
             teamHtml = addEmployee(manager);
         });
+    //sends html code with manager data to next function 
     nextQuestion(teamHtml);
 }
 
+//this function continually prompts user to add other employees and concat each employee after the managers html code
 async function nextQuestion(teamHtml){
     let question = true;
     while (question) {
         let answer = await inquirer.prompt(nextEmployee);
+        //chooses which prompt to ask based on user choice of employee
         if (answer.add === 'I want to add an engineer') {
             
             const engineer = new Engineer();
@@ -106,12 +113,11 @@ async function nextQuestion(teamHtml){
             teamHtml += employeeHtml;
         } 
         else {
+            //if no more employees are to be added the loop breaks. Html code with manager and all employees entered is then sent to htmlGeneration.js to writeFile
             finished(teamHtml);       
             question = false;
         }
-
-    }
-    
+    }    
 }
 
 teamPrompt();

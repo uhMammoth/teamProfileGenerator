@@ -1,5 +1,6 @@
 const fs = require('fs');
 
+//beginning of html sandwhich that goes before the team member cards
 const beginningHtml = `
 <!DOCTYPE html>
 <html lang="en">
@@ -18,14 +19,16 @@ const beginningHtml = `
     <main class="flex flex-wrap w-1/2 m-auto justify-center pt-6">
 `;
 
+//bottom of html sandwhich to go after html cards are added
 const endingHtml = `
     </main>
 </body>
 </html>
 `
-
+//takes in employee and spits back html code of that employees card to be added
 const addEmployee = function(employee){
 
+    //since each employee has one unique attribute this if statement decides which one is used [ officenumber / github / school ]
     let uniqueIdentifier = '';
     if (employee.getRole() === 'Manager') {
         uniqueIdentifier = `Office Number: ${employee.getOffice()}`;
@@ -35,7 +38,6 @@ const addEmployee = function(employee){
         uniqueIdentifier = `School: ${employee.getSchool()}`;
     }
 
-    console.log('working');
     const teamMember = `
     <div class="rounded m-3 min-w-[30%] shadow-lg shadow-black overflow-hidden text-xl">
           <div class="text-white bg-blue-500 p-3">
@@ -54,6 +56,8 @@ const addEmployee = function(employee){
     return teamMember;
 }
 
+
+//once user is done adding employees this will be called, takes in the html cards generated previously with manager and all employees then writes to file
 const finished = function(teamHtml){
     let htmlPage = beginningHtml + teamHtml + endingHtml;
     fs.writeFile(`./dist/index.html`, htmlPage, (err) => {

@@ -1,3 +1,4 @@
+//manager is a subclass of employee using attributes id,name, email and officenumber
 const employee = require('./Employee.js');
 
 class manager extends employee {

@@ -1,3 +1,4 @@
+//engineer is a subclass of employee using attributes id,name, email and github
 const employee = require('./Employee');
 
 class engineer extends employee {
