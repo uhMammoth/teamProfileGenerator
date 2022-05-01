@@ -25,18 +25,28 @@ const endingHtml = `
 `
 
 const addEmployee = function(employee){
+
+    let uniqueIdentifier = '';
+    if (employee.getRole() === 'Manager') {
+        uniqueIdentifier = `Office Number: ${employee.getOffice()}`;
+    } else if (employee.getRole() === 'Engineer') {
+        uniqueIdentifier = `Github: <a class="text-blue-600 hover:underline" href="https://github.com/${employee.getGithub()}">${employee.getGithub()}</a>`;
+    } else if (employee.getRole() === 'Intern') {
+        uniqueIdentifier = `School: ${employee.getSchool()}`;
+    }
+
     console.log('working');
     const teamMember = `
     <div class="rounded m-3 min-w-[30%] shadow-2xl overflow-hidden text-xl">
           <div class="text-white bg-blue-500 p-3">
-              <h2>${employee.getName()}</h2>
+              <h2 class="text-lg">${employee.getName()}</h2>
               <h2>${employee.getRole()}</h2>
           </div>  
           <div class="p-6 bg-gray-200">
               <ul class="">
-                  <li class="border bg-white rounded p-3">ID:</li>
-                  <li class="border bg-white rounded p-3">Email:</li>
-                  <li class="border bg-white rounded p-3">Phone:</li>
+                  <li class="border bg-white rounded p-3">ID: ${employee.getId()}</li>
+                  <li class="border bg-white rounded p-3">Email: <a class="text-blue-600 hover:underline" href="mailto:${employee.getEmail()}">${employee.getEmail()}</a></li>
+                  <li class="border bg-white rounded p-3">${uniqueIdentifier}</li>
               </ul>
           </div>
     </div>

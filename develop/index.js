@@ -20,11 +20,17 @@ const promptQuestions = [{
 },{
     type: 'text',
     name: 'email',
-    message: 'What is your email?'
+    message: 'What is your email?',
+    validate: function(email){
+        return /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(email);
+    }
 },{
     type: 'text',
     name: 'employeeEmail',
-    message: `What is the employee's email?`
+    message: `What is the employee's email?`,
+    validate: function(email){
+        return /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+([^<>()\.,;:\s@\"]{2,}|[\d\.]+))$/.test(email);
+    }
 },{
     type: 'text',
     name: 'office',
@@ -62,6 +68,8 @@ async function teamPrompt(){
             manager.name = answer.fullName;
             manager.email = answer.email;
             manager.officeNumber = answer.office;
+            manager.id = answer.id;
+
             teamHtml = addEmployee(manager);
         });
     nextQuestion(teamHtml);
