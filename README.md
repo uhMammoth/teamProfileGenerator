@@ -14,6 +14,7 @@ node index.js
 ## Mock Up
 ![mock-up](./develop/src/10-object-oriented-programming-homework-demo(1).jpg)
 ## Tests
+While inside the develop folder run the following command to test that all 4 object files are functioning properly
 ```
-
+npm run test
 ```

@@ -37,7 +37,7 @@ const addEmployee = function(employee){
 
     console.log('working');
     const teamMember = `
-    <div class="rounded m-3 min-w-[30%] shadow-2xl overflow-hidden text-xl">
+    <div class="rounded m-3 min-w-[30%] shadow-lg shadow-black overflow-hidden text-xl">
           <div class="text-white bg-blue-500 p-3">
               <h2 class="text-lg">${employee.getName()}</h2>
               <h2>${employee.getRole()}</h2>
