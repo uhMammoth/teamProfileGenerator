@@ -1,0 +1,1 @@
+const something = require('../lib/classes.js');
