@@ -5,7 +5,7 @@ const Manager = require('./lib/manager.js');
 
 const promptQuestions = [{
     type: 'text',
-    name: 'name',
+    name: 'fullName',
     message: 'What is your name?'
 },{
     type: 'text',
@@ -24,49 +24,57 @@ const promptQuestions = [{
     name: 'school',
     message: 'What school did you graduate from?'
 },{
-    type: 'checklist',
+    type: 'list',
     name: 'add',
-    message: 'Would you like to add another employee?'
+    message: 'Would you like to add another employee?',
+    choices: ['I want to add an engineer', 'I want to add an intern', 'No more employees to add']
 }];
 
-const [name, email, office, github, school, add] = promptQuestions;
-const managerQuestions = [name, email, office];
-const engineerQuestions = [name, email, github];
-const internQuestions = [name, email, school];
-const nextEmployee = [add];
+const [fullName, email, office, github, school, nextEmployee] = promptQuestions;
+
+const managerQuestions = [fullName, email, office];
+const engineerQuestions = [fullName, email, github];
+const internQuestions = [fullName, email, school];
+
+const employee = new Employee();
 
 // inquirer prompt
-const teamPrompt = function(){
-    inquirer
+async function teamPrompt(){
+    await inquirer
         .prompt(managerQuestions)
-        .then(({answer}) => {
+        .then((answer) => {
             const manager = new Manager();
-            manager.name = answer.name;
-            manager.id = Employee.id;
-            Employee.id++;
+            manager.name = answer.fullName;
             manager.email = answer.email;
             manager.officeNumber = answer.office;
-            addEmployee(manager);
+            // addEmployee(manager);
+
+            employee.addId();
         });
     nextQuestion();
 }
 
-const nextQuestion = function(){
-
+async function nextQuestion(){
     let question = true;
-    While (question) {
+    while (question) {
 
-        let answer = await inquirer(add);
-        if (answer == "engineer") {
-
-        } else if (answer == "intern") {
-            
+        let answer = await inquirer.prompt(nextEmployee);
+        if (answer.add === 'I want to add an engineer') {
+            // let {engineer} = await inquirer(engineerQuestions);
+            console.log('engineer');
+            // addEmployee(employee);
+        } else if (answer.add === 'I want to add an intern') {
+            // let {intern} = await inquirer(internQuestions);
+            // addEmployee(employee);
+            console.log('intern');
         } 
         else {
+            console.log('Check the dist folder for the generated HTML file!');
+            question = false;
         }
 
     }
+    
 }
-
 
 teamPrompt();
