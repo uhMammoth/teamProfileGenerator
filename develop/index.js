@@ -1,7 +1,9 @@
 const inquirer = require('inquirer');
-const addEmployee = require('./src/htmlGeneration.js');
-const Employee = require('./lib/Employee.js');
-const Manager = require('./lib/Manager.js');
+const {addEmployee, finished} = require('./dist/htmlGeneration');
+const Employee = require('./lib/Employee');
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
 
 const promptQuestions = [{
     type: 'text',
@@ -10,7 +12,11 @@ const promptQuestions = [{
 },{
     type: 'text',
     name: 'employeeName',
-    message: `What is the employee's name?`
+    message: `Enter the employee's name:`
+},{
+    type: 'text',
+    name: 'id',
+    message: 'Enter employee ID:'
 },{
     type: 'text',
     name: 'email',
@@ -18,7 +24,7 @@ const promptQuestions = [{
 },{
     type: 'text',
     name: 'employeeEmail',
-    message: 'What is their email?'
+    message: `What is the employee's email?`
 },{
     type: 'text',
     name: 'office',
@@ -26,7 +32,7 @@ const promptQuestions = [{
 },{
     type: 'text',
     name: 'github',
-    message: `What is the employee's github username?`
+    message: `Enter the employee's github username?`
 },{
     type: 'text',
     name: 'school',
@@ -38,16 +44,17 @@ const promptQuestions = [{
     choices: ['I want to add an engineer', 'I want to add an intern', 'No more employees to add']
 }];
 
-const [fullName, employeeName, email, employeeEmail, office, github, school, nextEmployee] = promptQuestions;
+const [fullName, employeeName, id, email, employeeEmail, office, github, school, nextEmployee] = promptQuestions;
 
-const managerQuestions = [fullName, email, office];
-const engineerQuestions = [employeeName, employeeEmail, github];
-const internQuestions = [employeeName, employeeEmail, school];
+const managerQuestions = [fullName, id, email, office];
+const engineerQuestions = [employeeName, id, employeeEmail, github];
+const internQuestions = [employeeName, id, employeeEmail, school];
 
 const employee = new Employee();
 
 // inquirer prompt
-async function teamPrompt(){
+async function teamPrompt(){    
+    let teamHtml = ``;
     await inquirer
         .prompt(managerQuestions)
         .then((answer) => {
@@ -55,29 +62,43 @@ async function teamPrompt(){
             manager.name = answer.fullName;
             manager.email = answer.email;
             manager.officeNumber = answer.office;
-            // addEmployee(manager);
-            console.log(manager);
-            employee.addId();
+            teamHtml = addEmployee(manager);
         });
-    nextQuestion();
+    nextQuestion(teamHtml);
 }
 
-async function nextQuestion(){
+async function nextQuestion(teamHtml){
     let question = true;
     while (question) {
-
         let answer = await inquirer.prompt(nextEmployee);
         if (answer.add === 'I want to add an engineer') {
-            let engineer = await inquirer.prompt(engineerQuestions);
-            console.log(engineer);
-            // addEmployee(employee);
+            
+            const engineer = new Engineer();
+            let employee = await inquirer.prompt(engineerQuestions);
+
+            engineer.name = employee.employeeName;
+            engineer.id = employee.id;
+            engineer.email = employee.employeeEmail;
+            engineer.github = employee.github;
+
+            const employeeHtml = addEmployee(engineer);
+            teamHtml += employeeHtml;
+
         } else if (answer.add === 'I want to add an intern') {
-            let intern = await inquirer.prompt(internQuestions);
-            // addEmployee(employee);
-            console.log(intern);
+
+            const intern = new Intern();
+            let employee = await inquirer.prompt(internQuestions);
+
+            intern.name = employee.employeeName;
+            intern.id = employee.id;
+            intern.email = employee.employeeEmail;
+            intern.school = employee.school;
+            
+            const employeeHtml = addEmployee(intern);
+            teamHtml += employeeHtml;
         } 
         else {
-            console.log('Check the dist folder for the generated HTML file!');
+            finished(teamHtml);       
             question = false;
         }
 
