@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const addEmployee = require('./src/htmlGeneration.js');
-const Employee = require('./lib/employee.js');
-const Manager = require('./lib/manager.js');
+const Employee = require('./lib/Employee.js');
+const Manager = require('./lib/Manager.js');
 
 const promptQuestions = [{
     type: 'text',

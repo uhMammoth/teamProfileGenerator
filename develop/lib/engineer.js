@@ -1,7 +1,8 @@
-const employee = require('./employee');
+const employee = require('./Employee');
 
 class engineer extends employee {
     constructor(github){
+        super();
         this.github = github;
     }
     getGithub(){

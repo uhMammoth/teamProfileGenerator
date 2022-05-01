@@ -1,8 +1,16 @@
 {
+  "name": "team_profile",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+
   "dependencies": {
     "inquirer": "^8.2.4"
   },
   "devDependencies": {
     "jest": "^28.0.3"
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
